@@ -1,0 +1,80 @@
+﻿@model TestCase66bit.Models.FootballPlayerModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+<form method="post" asp-action="Create">
+
+
+    <div class="text-center">
+        <h1 class="display-4">Добавить игрока</h1>
+        <p></p>
+    </div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card">
+        <p></p>
+        <div class="col-12 row">
+
+            <label style="margin-right:2pt; margin-left:14pt" for="lastName"> Фамилия: </label>
+            <input asp-for="lastName" type="text" />
+
+            <label style="margin-left:5pt; margin-right:2pt" for="firstName">Имя: </label>
+            <input asp-for="firstName" type="text" />
+        </div>
+        <span asp-validation-for="lastName" class="text-danger"></span>
+        <span asp-validation-for="firstName" class="text-danger"></span>
+        <p></p>
+        <div class="col-12">
+
+
+
+            <label asp-for="birthDate">Дата рождения:</label>
+            <input name="birthDate" id="birthDate" type="date" />
+            <span asp-validation-for="birthDate" class="text-danger"></span>
+            <p></p>
+            <div>
+                <label for="gender"><b>Пол:</b> </label>
+                <input asp-for="gender" value="муж" type="radio" />
+
+                <label for="genderMale"> Муж </label>
+                <input asp-for="gender" value="жен" type="radio" />
+                <label for="genderFemale">Жен </label>
+                <p></p>
+                <span asp-validation-for="gender" class="text-danger"></span>
+            </div>
+
+            <p></p>
+            <label for="team">Команда:</label>
+            <input asp-for="team" list="teams" id="team" name="team" />
+
+            <datalist id="teams">
+                @foreach (var obj in ViewBag.Teams)
+                {
+                    <option value=@obj></option>
+                }
+            </datalist>
+            <span asp-validation-for="team" class="text-danger"></span>
+            <label for="country"> Страна: </label>
+            <select asp-for="country" name="country" id="country">
+
+                @foreach (var obj in ViewBag.Countries)
+                {
+                    <option value=@obj> @obj </option>
+                }
+            </select>
+            <span asp-validation-for="country" class="text-danger"></span>
+            <p></p>
+            <button class="btn btn-primary col-3" type="submit" asp-controller="Home" asp-action="Create"> Создать </button>
+            <p></p>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,0 +1,148 @@
+﻿@model IEnumerable<TestCase66bit.Models.FootballPlayerModel>
+
+
+@section Scripts{
+
+
+    <script>
+
+    </script>
+
+}
+@{
+    ViewData["Title"] = "Index";
+}
+<body>
+
+    <form method="post">
+
+        <div class="container p-3">
+            <div class="row pt-4">
+                <div class="col-6">
+                    <h2 class="text-primary">Список футболистов</h2>
+                </div>
+
+            </div>
+
+            <br /><br />
+
+            @if (Model.Count() > 0)
+            {
+                <table id="list" class="table table-bordered table-striped" style="width:80%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Фамилия
+                            </th>
+                            <th>
+                                Имя
+                            </th>
+                            <th>
+                                Дата рождения <br />(дд/мм/гг)
+                            </th>
+                            <th>
+                                Пол
+                            </th>
+                            <th>
+                                Команда
+                            </th>
+                            <th>
+                                Страна
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var obj in Model)
+                        {
+                            <tr id="@obj.Id">
+                                <td>@obj.lastName</td>
+                                <td>@obj.firstName</td>
+                                <td>@obj.birthDate.ToShortDateString()</td>
+                                <td>@obj.gender</td>
+                                <td>@obj.team</td>
+                                <td>@obj.country</td>
+                                <td class="text-center">
+                                    <div class="w-100 btn-group" role="group">
+                                        <button type="button" class="btn btn-primary mx-1" onclick="SelectPlayerForEditing(`@obj.Id` )" >Изменить</button>
+                                        <a asp-controller="EditPlayers" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-1"> Удалить</a>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <table id="list" class="table table-bordered table-striped" style="width:80%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Фамилия
+                            </th>
+                            <th>
+                                Имя
+                            </th>
+                            <th>
+                                Дата рождения
+                            </th>
+                            <th>
+                                Пол
+                            </th>
+                            <th>
+                                Команда
+                            </th>
+                            <th>
+                                Страна
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="tipForEmptyTable">
+                    <p>Пока в каталоге нет футболистов. </p>
+                    <a asp-controller="Home" asp-action="Index"> Добавить?</a>
+                </div>
+            }
+
+        </div>
+        <a id="btnOpenPopup" data-mfp-src="#form-popup" style="visibility:hidden"> </a>
+
+
+        @* Панель редактирования игрока *@
+    <div id="form-popup" class="col-6 white-popup mfp-hide align-items-center" style="margin-left:25%">
+        <input name="lastNameEdit" id="lastNameEdit" class="inputbox" type="text" placeholder="Фамилия" />
+        <input id="firstNameEdit" class="inputbox" type="text" placeholder="Имя" />
+        <br />
+        <input name="birthDateEdit" id="birthDateEdit" type="date" />
+        <select id="genderEdit">
+            <option value=муж> муж </option>
+            <option value=жен> жен </option>
+        </select>
+        <input list="teamsEditList" id="teamEdit" name="teamEdit" placeholder="Команда" />
+        <datalist id="teamsEditList">
+            @foreach (var obj in ViewBag.Teams)
+            {
+                <option value=@obj></option>
+            }
+        </datalist>
+        <select id="country">
+            @foreach (var obj in ViewBag.Countries)
+            {
+                <option value=@obj>@obj</option>
+            }
+        </select>
+        <br />
+        <a href="" onclick="TransferDataToHref()" class="btn btn-primary mx-1"> Отправить</a>
+        <p><a id="hrefForEdit" href="" style="visibility:hidden"></a></p>
+    </div>
+
+
+    </form>
+</body>
